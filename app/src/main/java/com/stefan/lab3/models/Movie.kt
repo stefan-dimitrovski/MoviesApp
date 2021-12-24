@@ -1,6 +1,11 @@
 package com.stefan.lab3.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Movie(
+    @PrimaryKey
     val imdbID: String,
     val Title: String,
     val Year: String,
