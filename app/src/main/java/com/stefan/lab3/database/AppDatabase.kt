@@ -9,22 +9,24 @@ import com.stefan.lab3.models.Movie
 
 @Database(entities = [Movie::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDao(): MovieDao
+    abstract fun movieDao(): MovieDao
 
-    private lateinit var instance: AppDatabase
+    companion object {
+        private var instance: AppDatabase? = null
 
-    fun getInstance(context: Context): AppDatabase {
-        if (instance == null) {
-            instance = createInstance(context)
+        fun getInstance(context: Context): AppDatabase {
+            if (instance == null) {
+                instance = createInstance(context)
+            }
+            return instance!!
         }
-        return instance
-    }
 
-    private fun createInstance(context: Context): AppDatabase {
-        return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java, "movie.db"
-        ).build()
+        private fun createInstance(context: Context): AppDatabase {
+            return Room.databaseBuilder(
+                context,
+                AppDatabase::class.java, "movie.db"
+            ).build()
+        }
     }
 
 }

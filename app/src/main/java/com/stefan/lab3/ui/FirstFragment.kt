@@ -38,20 +38,17 @@ class FirstFragment : Fragment(), CellClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        movies.clear()
+
         firstFragmentViewModel = ViewModelProvider(this).get(FirstFragmentViewModel::class.java)
         firstFragmentViewModel.getMovieMutableLiveData()
             .observe(viewLifecycleOwner,
                 { t ->
                     if (t != null) {
                         displayData(t)
-                    } else {
-                        Toast.makeText(
-                            activity,
-                            "Error!",
-                            Toast.LENGTH_LONG
-                        ).show()
                     }
-                })
+                }
+            )
 
         binding.rvMoviesList.layoutManager = LinearLayoutManager(activity)
         binding.rvMoviesList.adapter = MoviesRecyclerViewAdapter(movies, this)
@@ -70,23 +67,7 @@ class FirstFragment : Fragment(), CellClickListener {
     }
 
     private fun displayData(body: Movie) {
-        movies.add(
-            Movie(
-                body.imdbID,
-                body.Title,
-                body.Year,
-                body.Rated,
-                body.Released,
-                body.Runtime,
-                body.Genre,
-                body.Director,
-                body.Actors,
-                body.Plot,
-                body.Poster,
-                body.imdbRating,
-                body.BoxOffice,
-            )
-        )
+        movies.add(body)
         binding.rvMoviesList.adapter?.notifyItemInserted(movies.size - 1)
         binding.etMovieTitle.text.clear()
     }

@@ -6,7 +6,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.stefan.lab3.api.MovieApi
 import com.stefan.lab3.api.MovieApiClient
+import com.stefan.lab3.database.AppDatabase
 import com.stefan.lab3.models.Movie
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +20,7 @@ class FirstFragmentViewModel(application: Application) : AndroidViewModel(applic
 
     private var movieApiClient: MovieApi = MovieApiClient.getMovieApi()!!
     private var app: Application = application
+    private var database: AppDatabase = AppDatabase.getInstance(application)
     private var moviesMutableLiveData: MutableLiveData<Movie> = MutableLiveData<Movie>()
 
     fun searchMovieByTitle(title: String) {
@@ -24,6 +29,7 @@ class FirstFragmentViewModel(application: Application) : AndroidViewModel(applic
                 if (response.code() == 200) {
                     try {
                         val currentMovie = response.body()
+                        saveMovieInDatabase(currentMovie!!)
                         moviesMutableLiveData.value = currentMovie
                     } catch (e: Exception) {
                         Toast.makeText(
@@ -45,6 +51,12 @@ class FirstFragmentViewModel(application: Application) : AndroidViewModel(applic
                 Toast.makeText(app, t.message, Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun saveMovieInDatabase(currentMovie: Movie) {
+        CoroutineScope(Dispatchers.IO).launch {
+            database.movieDao().insertMovie(currentMovie)
+        }
     }
 
     fun getMovieMutableLiveData(): MutableLiveData<Movie> {
