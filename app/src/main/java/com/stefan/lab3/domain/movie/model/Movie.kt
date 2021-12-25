@@ -1,4 +1,4 @@
-package com.stefan.lab3.models
+package com.stefan.lab3.domain.movie.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,11 +1,10 @@
-package com.stefan.lab3.database
+package com.stefan.lab3.data.movie.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.stefan.lab3.database.dao.MovieDao
-import com.stefan.lab3.models.Movie
+import com.stefan.lab3.domain.movie.model.Movie
 
 @Database(entities = [Movie::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {

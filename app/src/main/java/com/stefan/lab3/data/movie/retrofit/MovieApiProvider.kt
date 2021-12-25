@@ -1,9 +1,9 @@
-package com.stefan.lab3.api
+package com.stefan.lab3.data.movie.retrofit
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MovieApiClient {
+class MovieApiProvider {
 
     companion object {
         private var movieApi: MovieApi? = null

@@ -1,4 +1,4 @@
-package com.stefan.lab3.ui
+package com.stefan.lab3.ui.search
 
 import android.app.Activity
 import android.content.Context.INPUT_METHOD_SERVICE
@@ -14,11 +14,10 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.stefan.lab3.adapters.MoviesRecyclerViewAdapter
 import com.stefan.lab3.R
 import com.stefan.lab3.databinding.FragmentFirstBinding
-import com.stefan.lab3.models.Movie
-import com.stefan.lab3.viewmodels.FirstFragmentViewModel
+import com.stefan.lab3.domain.movie.model.Movie
+import com.stefan.lab3.ui.MoviesRecyclerViewAdapter
 
 class FirstFragment : Fragment(), CellClickListener {
 

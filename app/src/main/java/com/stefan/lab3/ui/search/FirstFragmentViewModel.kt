@@ -1,13 +1,13 @@
-package com.stefan.lab3.viewmodels
+package com.stefan.lab3.ui.search
 
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.stefan.lab3.api.MovieApi
-import com.stefan.lab3.api.MovieApiClient
-import com.stefan.lab3.database.AppDatabase
-import com.stefan.lab3.models.Movie
+import com.stefan.lab3.data.movie.retrofit.MovieApi
+import com.stefan.lab3.data.movie.retrofit.MovieApiProvider
+import com.stefan.lab3.data.movie.room.AppDatabase
+import com.stefan.lab3.domain.movie.model.Movie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import java.lang.Exception
 
 class FirstFragmentViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var movieApiClient: MovieApi = MovieApiClient.getMovieApi()!!
+    private var movieApiClient: MovieApi = MovieApiProvider.getMovieApi()!!
     private var app: Application = application
     private var database: AppDatabase = AppDatabase.getInstance(application)
     private var moviesMutableLiveData: MutableLiveData<Movie> = MutableLiveData<Movie>()
