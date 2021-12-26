@@ -14,4 +14,10 @@ interface MovieDao {
 
     @Query("SELECT * FROM movie")
     fun getAllMovies(): List<Movie>
+
+    @Query("SELECT * FROM movie WHERE imdbID IN (:movieId) LIMIT 1")
+    fun findById(movieId: String): Movie
+
+    @Query("DELETE FROM movie")
+    fun deleteAll()
 }

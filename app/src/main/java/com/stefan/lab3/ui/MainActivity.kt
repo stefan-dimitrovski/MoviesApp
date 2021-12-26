@@ -8,13 +8,16 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
 import com.stefan.lab3.R
 import com.stefan.lab3.databinding.ActivityMainBinding
+import com.stefan.lab3.ui.search.ViewModelProviderFactory
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var activityViewModel: ActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,10 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        val viewModelFactory = ViewModelProviderFactory(this)
+        activityViewModel =
+            ViewModelProvider(this, viewModelFactory).get(ActivityViewModel::class.java)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -37,7 +44,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                activityViewModel.deleteMovies()
+                finish()
+                startActivity(intent)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
