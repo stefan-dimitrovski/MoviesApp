@@ -16,25 +16,13 @@ class MovieRepository(
     private val movieApi: MovieApi
 ) {
 
-    fun searchMovieByTitle(title: String) {
-        movieApi.getMovieByTitle(title).enqueue(object : Callback<Movie> {
-            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
-                if (response.code() == 200) {
-                    try {
-                        val currentMovie = response.body()
-                        if (!currentMovie?.imdbID.isNullOrBlank()) {
-                            saveInDatabase(currentMovie!!)
-                        }
-                    } catch (e: Exception) {
-                        print(e)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<Movie>, t: Throwable) {
-
-            }
-        })
+    fun searchMovieByTitle(title: String): List<Movie> {
+        val movieResponse = movieApi.getMovieByTitle(title)
+        val currentMovie = movieResponse.execute().body()
+        if (!currentMovie?.imdbID.isNullOrBlank()) {
+            saveInDatabase(currentMovie!!)
+        }
+        return movieDao.getAllMovies()
     }
 
     private fun saveInDatabase(currentMovie: Movie) {

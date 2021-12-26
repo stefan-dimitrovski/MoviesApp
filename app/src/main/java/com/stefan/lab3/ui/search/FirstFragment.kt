@@ -41,7 +41,7 @@ class FirstFragment : Fragment(), CellClickListener {
         firstFragmentViewModel =
             ViewModelProvider(this, viewModelFactory).get(FirstFragmentViewModel::class.java)
 
-        binding.rvMoviesList.layoutManager = LinearLayoutManager(activity)
+        binding.rvMoviesList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         binding.rvMoviesList.adapter = moviesAdapter
 
         firstFragmentViewModel.getMovieMutableLiveData().observe(viewLifecycleOwner) {

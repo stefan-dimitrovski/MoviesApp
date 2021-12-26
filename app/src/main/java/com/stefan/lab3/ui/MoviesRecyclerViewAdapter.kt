@@ -19,7 +19,6 @@ class MoviesRecyclerViewAdapter(
 
     private val movies: MutableList<Movie> = ArrayList()
 
-    @SuppressLint("NotifyDataSetChanged")
     fun updateMovies(movies: List<Movie>?) {
         this.movies.clear()
         if (movies != null) {
