@@ -1,4 +1,4 @@
-package com.stefan.lab3.ui
+package com.stefan.lab3.ui.details
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

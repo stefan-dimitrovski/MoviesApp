@@ -1,4 +1,4 @@
-package com.stefan.lab3.ui
+package com.stefan.lab3.ui.search
 
 import android.app.Activity
 import android.content.Context.INPUT_METHOD_SERVICE
@@ -14,18 +14,17 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.stefan.lab3.adapters.MoviesRecyclerViewAdapter
 import com.stefan.lab3.R
 import com.stefan.lab3.databinding.FragmentFirstBinding
-import com.stefan.lab3.models.Movie
-import com.stefan.lab3.viewmodels.FirstFragmentViewModel
+import com.stefan.lab3.domain.movie.model.Movie
+import com.stefan.lab3.ui.MoviesRecyclerViewAdapter
 
 class FirstFragment : Fragment(), CellClickListener {
 
     private var _binding: FragmentFirstBinding? = null
     private val binding get() = _binding!!
-    private val movies: MutableList<Movie> = mutableListOf()
     private lateinit var firstFragmentViewModel: FirstFragmentViewModel
+    private val moviesAdapter = MoviesRecyclerViewAdapter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,38 +37,31 @@ class FirstFragment : Fragment(), CellClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movies.clear()
+        val viewModelFactory = ViewModelProviderFactory(requireContext())
+        firstFragmentViewModel =
+            ViewModelProvider(this, viewModelFactory).get(FirstFragmentViewModel::class.java)
 
-        firstFragmentViewModel = ViewModelProvider(this).get(FirstFragmentViewModel::class.java)
-        firstFragmentViewModel.getMovieMutableLiveData()
-            .observe(viewLifecycleOwner,
-                { t ->
-                    if (t != null) {
-                        displayData(t)
-                    }
-                }
-            )
+        binding.rvMoviesList.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        binding.rvMoviesList.adapter = moviesAdapter
 
-        binding.rvMoviesList.layoutManager = LinearLayoutManager(activity)
-        binding.rvMoviesList.adapter = MoviesRecyclerViewAdapter(movies, this)
+        firstFragmentViewModel.getMovieMutableLiveData().observe(viewLifecycleOwner) {
+            moviesAdapter.updateMovies(it)
+            binding.rvMoviesList.scrollToPosition(firstFragmentViewModel.getMovieMutableLiveData().value!!.size - 1)
+        }
 
         binding.etMovieTitle.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
                 val title: String = binding.etMovieTitle.text.toString()
                 activity?.hideSoftKeyboard()
-                firstFragmentViewModel.searchMovieByTitle(title)
+                firstFragmentViewModel.search(title)
+                binding.etMovieTitle.text.clear()
                 true
             } else {
                 Toast.makeText(activity, "Error!", Toast.LENGTH_LONG).show()
                 false
             }
         }
-    }
-
-    private fun displayData(body: Movie) {
-        movies.add(body)
-        binding.rvMoviesList.adapter?.notifyItemInserted(movies.size - 1)
-        binding.etMovieTitle.text.clear()
     }
 
     override fun onDestroyView() {
