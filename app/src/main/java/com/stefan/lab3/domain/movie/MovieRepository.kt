@@ -3,9 +3,6 @@ package com.stefan.lab3.domain.movie
 import com.stefan.lab3.data.movie.retrofit.MovieApi
 import com.stefan.lab3.data.movie.room.MovieDao
 import com.stefan.lab3.domain.movie.model.Movie
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MovieRepository(
     private val movieDao: MovieDao,
@@ -21,14 +18,20 @@ class MovieRepository(
         return movieDao.getAllMovies()
     }
 
-    private fun saveInDatabase(currentMovie: Movie) {
-        CoroutineScope(Dispatchers.IO).launch {
-            movieDao.insertMovie(currentMovie)
-        }
+    fun getMovieById(movieId: String): Movie {
+        return movieDao.findById(movieId)
     }
 
     fun getAllMovies(): List<Movie> {
         return movieDao.getAllMovies()
+    }
+
+    fun deleteAllMovies() {
+        movieDao.deleteAll()
+    }
+
+    private fun saveInDatabase(currentMovie: Movie) {
+        movieDao.insertMovie(currentMovie)
     }
 
 }

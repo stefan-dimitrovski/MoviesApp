@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Lab3</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Clear All Movies</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">Find Movie</string>
     <string name="second_fragment_label">Movie Details</string>
