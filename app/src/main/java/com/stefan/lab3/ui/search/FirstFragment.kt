@@ -46,6 +46,7 @@ class FirstFragment : Fragment(), CellClickListener {
 
         firstFragmentViewModel.getMovieMutableLiveData().observe(viewLifecycleOwner) {
             moviesAdapter.updateMovies(it)
+            binding.rvMoviesList.scrollToPosition(firstFragmentViewModel.getMovieMutableLiveData().value!!.size - 1)
         }
 
         binding.etMovieTitle.setOnEditorActionListener { _, actionId, _ ->
