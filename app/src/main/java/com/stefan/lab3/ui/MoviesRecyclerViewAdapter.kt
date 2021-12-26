@@ -1,5 +1,6 @@
 package com.stefan.lab3.ui
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stefan.lab3.R
+import com.stefan.lab3.data.movie.room.MovieDao
 import com.stefan.lab3.domain.movie.model.Movie
 import com.stefan.lab3.ui.search.CellClickListener
 
 class MoviesRecyclerViewAdapter(
-    private val movies: MutableList<Movie>,
     private val cellClickListener: CellClickListener
 ) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
+
+    private val movies: MutableList<Movie> = ArrayList()
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateMovies(movies: List<Movie>?) {
+        this.movies.clear()
+        if (movies != null) {
+            this.movies.addAll(movies)
+        }
+        notifyDataSetChanged()
+    }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.tv_MovieTitle)
