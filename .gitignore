@@ -13,5 +13,3 @@
 .externalNativeBuild
 .cxx
 local.properties
-/app/src/main/java/com/stefan/lab3/api/env/Env.kt
-/app/src/main/java/com/stefan/lab3/env/Env.kt
